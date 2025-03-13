@@ -1,0 +1,61 @@
+/* 전체 영역 중앙 정렬 */
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* 상단 정렬 */
+    padding-top: 25vh; /* 위로 10% 만큼 간격 */
+    height: 100vh;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+/* 폼 스타일 */
+.form {
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* 제목 스타일 */
+.title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* 입력 필드 스타일 */
+.input {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+/* 입력 필드 포커스 */
+.input:focus {
+    outline: none;
+    border-color: #1b8efa;
+}
+
+/* 버튼 스타일 */
+.button {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #1b8efa;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* 버튼 호버 */
+.button:hover {
+    background-color: #166bb7;
+}

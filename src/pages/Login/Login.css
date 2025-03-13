@@ -1,0 +1,90 @@
+/* Main Content */
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.login-container {
+    text-align: center;
+    padding: 0 20px;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column; /* 로고 이미지와 텍스트를 세로로 정렬 */
+    align-items: center;    /* 가운데 정렬 */
+}
+
+.logo-img-large {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+}
+
+.logo-text-large {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1b8efa;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.description {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.btn {
+    display: block;
+    width: 100%; /* 기본 버튼 너비를 100%로 설정 */
+    max-width: 300px; /* 최대 너비 설정 */
+    padding: 15px;
+    margin: 10px auto;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #1b8efa;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #166bb7;
+}
+
+.btn-secondary {
+    background-color: white;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.btn-secondary:hover {
+    border: 1px solid #1b8efa;
+    color: #1b8efa;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .main {
+        height: auto;
+        padding: 20px 0;
+    }
+
+    .logo-text-large {
+        font-size: 20px; /* 글자 크기 줄이기 */
+    }
+
+    .description {
+        font-size: 14px; /* 글자 크기 줄이기 */
+    }
+
+    .btn {
+        font-size: 14px; /* 버튼 텍스트 크기 줄이기 */
+        padding: 10px; /* 버튼 높이 줄이기 */
+    }
+}

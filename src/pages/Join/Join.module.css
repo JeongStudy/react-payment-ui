@@ -1,0 +1,202 @@
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.field {
+    margin-bottom: 25px; /* 필드 간 간격 */
+    position: relative;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.input {
+    width: 100%;
+    padding: 12px; /* 버튼과 동일한 높이로 맞추기 */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.input:focus {
+    border-color: #4caf50; /* 포커스 시 테두리 색 변경 */
+    outline: none;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+}
+
+.success {
+    color: green;
+    font-size: 12px;
+}
+
+.checking {
+    color: orange;
+    font-size: 12px;
+}
+
+/* 비밀번호 애니메이션 */
+.passwordFields {
+    margin-top: 20px;
+    overflow: hidden;
+    opacity: 0;
+    height: 0;
+    transition: all 0.5s ease-in-out;
+}
+
+.slideIn {
+    opacity: 1;
+    height: auto;
+}
+
+.button {
+    padding: 12px 20px; /* 입력 칸과 동일한 높이 */
+    font-size: 14px;
+    line-height: 1.2;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-color: #f1f1f1;
+    color: #aaa;
+    cursor: not-allowed;
+    opacity: 0.7;
+    transition: all 0.3s ease-in-out;
+    display: flex; /* 텍스트를 수직 가운데 정렬 */
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    /*margin-top: 10px;*/
+}
+
+.button.glowing {
+    background-color: #4caf50;
+    color: white;
+    border-color: #4caf50;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.7); /* 활성화 강조 */
+    cursor: pointer;
+}
+
+.button.disabledButton {
+    background-color: #f9f9f9;
+    color: #aaa;
+    cursor: not-allowed; /* 비활성화 커서 */
+    border: 1px solid #ddd;
+    opacity: 0.6;
+}
+
+.button.enabled {
+    background-color: #ddd;
+    color: black;
+    cursor: pointer;
+    opacity: 1;
+}
+
+/* 회원가입 버튼 */
+.submitButton {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    border-radius: 10px;
+    text-align: center;
+    border: none;
+    background-color: #f1f1f1;
+    color: #aaa;
+    cursor: not-allowed;
+    opacity: 0.7;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.submitButton.active {
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+    opacity: 1;
+}
+
+.submitButton:hover {
+    background-color: #45a049;
+}
+
+.input.disabled {
+    background-color: #f9f9f9;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+.timerWrapper {
+    display: flex; /* 버튼과 타이머를 가로로 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+    gap: 10px; /* 버튼과 타이머 사이 간격 */
+}
+
+.inputRow {
+    display: flex;
+    gap: 10px; /* 입력 칸과 버튼 간 간격 */
+    align-items: center; /* 수직 정렬 */
+    margin-top: 10px;
+}
+
+.inputRow input,
+.inputRow button {
+    height: 40px;  /* 원하는 높이로 조정 (예: 40px) */
+    padding: 0 12px;
+    margin-top: 0; /* 불필요한 상단 마진 제거 */
+    box-sizing: border-box;
+    font-size: 14px;
+    line-height: 1.2;
+    border-radius: 10px;
+}
+
+.inputRow input {
+    margin-bottom: 0 !important; /* 기존의 margin-bottom을 제거하여 수평정렬 맞추기 */
+}
+
+.authCodeButton {
+    width: 100px; /* 원하는 넓이로 조정 */
+    flex: none; /* flex에 의해 크기가 줄어들지 않도록 설정 */
+}
+
+.phoneTimer {
+    font-size: 14px;
+    color: #ff5722;
+}
+
+.phoneVerificationResult {
+    display: flex;
+    align-items: center;   /* 수직 가운데 정렬 */
+    gap: 10px;            /* 버튼과 텍스트 사이 간격 */
+    margin-top: 10px;     /* 위와 간격 */
+}
+
+.resendButton {
+    padding: 6px 12px;
+    margin: 0px 6px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #ffc107;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.resendButton:hover {
+    background-color: #ff9800;
+}
+
+.checking {
+    color: orange;
+    font-size: 12px;
+    margin-top: 5px;
+}
