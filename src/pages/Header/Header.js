@@ -27,11 +27,11 @@ const Header = () => {
 
             {/* 데스크탑 메뉴 */}
             <nav className={`${styles.desktopMenu}`}>
-                <a href="#plans">플랜</a>
+                <a href="#plans">결제 플랜</a>
                 <a href="#guide">사용 가이드</a>
-                <a href="#download">앱 다운로드</a>
-                <a href="#inquiry">문의하기</a>
-                <a href="#academy">아카데미</a>
+                {/*<a href="#download">앱 다운로드</a>*/}
+                {/*<a href="#inquiry">문의하기</a>*/}
+                {/*<a href="#academy">아카데미</a>*/}
                 <button
                     className={styles.joinButton}
                     onClick={handleJoinClick}
@@ -56,11 +56,11 @@ const Header = () => {
                         menuOpen ? styles.navOpen : ""
                     }`}
                 >
-                    <a href="#plans">플랜</a>
+                    <a href="#plans">결제 플랜</a>
                     <a href="#guide">사용 가이드</a>
-                    <a href="#download">앱 다운로드</a>
-                    <a href="#inquiry">문의하기</a>
-                    <a href="#academy">픽투셀 아카데미</a>
+                    {/*<a href="#download">앱 다운로드</a>*/}
+                    {/*<a href="#inquiry">문의하기</a>*/}
+                    {/*<a href="#academy">아카데미</a>*/}
                     <button className={styles.loginButton}>회원가입 / 로그인</button>
                 </div>
             </div>

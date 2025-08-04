@@ -10,16 +10,16 @@ const LoginAuthId = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        alert(`입력된 아이디: ${inputValue}`);
+        alert(`입력된 이메일(아이디): ${inputValue}`);
     };
 
     return (
         <main className={styles.main}>
             <form className={styles.form} onSubmit={handleSubmit}>
-                <h1 className={styles.title}>아이디를 입력해주세요</h1>
+                <h1 className={styles.title}>이메일(아이디)를 입력해주세요</h1>
                 <input
                     type="text"
-                    placeholder="아이디를 입력하세요"
+                    placeholder="이메일(아이디)를 입력하세요"
                     value={inputValue}
                     onChange={handleChange}
                     className={styles.input}
