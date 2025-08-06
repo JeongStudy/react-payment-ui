@@ -8,7 +8,7 @@ export const signUpUser = async (payload) => {
         const response = await apiClient.post('auth/signup', payload, {
             baseURL: baseUrl
         });
-        return response.data;
+        return response;
     } catch (error) {
         throw error;
     }

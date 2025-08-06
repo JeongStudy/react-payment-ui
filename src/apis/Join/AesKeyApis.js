@@ -5,10 +5,10 @@ export const baseUrl = "http://localhost:8080/api";
 
 export const getAesKey = async () => {
     try {
-        const response = await apiClient.get('payment/crypto/aes', {
+        const response = await apiClient.post('payment/crypto/aes', {
             baseURL: baseUrl
         });
-        return response.data;
+        return response;
     } catch (error) {
         throw error;
     }

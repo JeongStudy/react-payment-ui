@@ -127,7 +127,7 @@ const Join = () => {
                 setJoinLoading(false);
                 return;
             }
-            const { aesKey } = aesResponse.data; // 필요 데이터 추출
+            const { aesKey } = aesResponse.data.data; // 필요 데이터 추출
 
             // 2. RSA 키 발급
             const rsaResponse = await getRsaKey();
@@ -137,21 +137,22 @@ const Join = () => {
                 setJoinLoading(false);
                 return;
             }
-            const { rsaPublicKey } = rsaResponse.data;
+            const { publicKey } = rsaResponse.data.data;
 
             // 2. 클라이언트 암호화
-            const encryptedAesKey = await rsaEncrypt(aesKey, rsaPublicKey);
+            const encryptedAesKey = await rsaEncrypt(aesKey, publicKey);
             const encryptedPassword = await aesEncrypt(formData.password, aesKey);
 
+            console.log(formData);
             // 3. 회원가입 API 호출
             const payload = {
                 email: formData.email,
-                encryptedPassword,
-                encryptedAesKey,
-                rsaPublicKey,
-                last_name: formData.last_name,
-                first_name: formData.first_name,
-                phone: formData.phone,
+                encPassword: encryptedPassword,
+                encAesKey: encryptedAesKey,
+                publicKey,
+                lastName: formData.last_name,
+                firstName: formData.first_name,
+                phoneNumber: formData.phone,
             };
             const data = await signUpUser(payload);
 
