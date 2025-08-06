@@ -17,7 +17,7 @@ apiClient.interceptors.request.use(
         // 예: 토큰 추가, 로깅 등
         const token = getToken();
         if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`;
+            config.headers['Authorization'] = `${token}`;
         }
         return config;
     },

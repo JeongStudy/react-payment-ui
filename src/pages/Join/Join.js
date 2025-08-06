@@ -157,7 +157,7 @@ const Join = () => {
             const data = await signUpUser(payload);
 
             if (data.status === 201) {
-                setAlertJoinMessage(data.message); // 서버 메시지 그대로 사용
+                setAlertJoinMessage(data.data.message); // 서버 메시지 그대로 사용
                 setShowJoinAlert(true);
             } else {
                 setAlertMessage(data.message || "회원가입에 실패했습니다.");

@@ -25,8 +25,8 @@ const Header = () => {
                 <span className={styles.logoText}>Example</span>
             </div>
             <nav className={`${styles.desktopMenu}`}>
-                <a href="#plans">결제 플랜</a>
-                <a href="#guide">사용 가이드</a>
+                <a href="/card/register">카드 결제 수단 등록</a>
+                {/*<a href="#guide">사용 가이드</a>*/}
                 {/* 로그인X 때만 노출 */}
                 {!isLoggedIn && (
                     <>
