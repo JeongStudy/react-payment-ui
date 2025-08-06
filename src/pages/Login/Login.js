@@ -1,6 +1,6 @@
 import React from "react";
 import './Login.css';
-import { useNavigate } from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -20,6 +20,7 @@ const Login = () => {
                 <button className="btn btn-secondary" onClick={handleIdLoginClick}>
                     <span>📧</span> 아이디로 시작
                 </button>
+                <Outlet />
             </div>
         </main>
     );
