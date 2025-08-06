@@ -1,5 +1,6 @@
 // api.js
 import axios from 'axios';
+import {getToken} from '../utils/token'
 
 // axios 인스턴스 생성 (공통 baseURL, 타임아웃, 헤더 등 설정)
 const apiClient = axios.create({
@@ -14,6 +15,10 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
     (config) => {
         // 예: 토큰 추가, 로깅 등
+        const token = getToken();
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
         return config;
     },
     (error) => {
