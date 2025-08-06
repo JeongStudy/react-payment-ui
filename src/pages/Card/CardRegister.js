@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
+import apiClient from '../../apis/Axios';
 
 const PG_INPUT_KEYS = [
   "version", "gopaymethod", "mid", "oid", "price", "timestamp",
@@ -11,18 +12,22 @@ const CardRegister = () => {
   const formRef = useRef(null);
   const [params, setParams] = useState({});
 
+
   // 가장 확실한 결제창 오픈 핸들러
   const handleCardRegister = async (e) => {
     e.preventDefault();
+
+    const baseUrl = 'http://localhost:8080/api'
     try {
-      // 1. 파라미터를 백엔드에서 받아옴
-      const res = await axios.post('http://localhost:8080/api/payment/cards/auth', {
-        pgCompany: "INICIS",
-        buyerName: "홍길동",
-        buyerTel: "01012341234",
-        buyerEmail: "test@email.com",
-        goodName: "카드 등록"
-      });
+       const res = await apiClient.post('payment/cards/auth', {
+            baseURL: baseUrl,
+            pgCompany: "INICIS",
+            buyerName: "홍길동",
+            buyerTel: "01012341234",
+            buyerEmail: "test@email.com",
+            goodName: "카드 등록"
+        });
+
       setParams(res.data); // state 변경
 
       // 2. 렌더링 끝난 뒤에 결제창 오픈 (input value 보장)
