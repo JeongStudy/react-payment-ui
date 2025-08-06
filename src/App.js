@@ -6,6 +6,8 @@ import Main from './pages/Main/Main';
 import Login from './pages/Login/Login';
 import LoginAuthId from './pages/Login/LoginAuthId';
 import Join from './pages/Join/Join';
+import CardRegister from './pages/Card/CardRegister';
+import InicisReturn from './pages/Card/InicisReturn';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
                   <Route path="id" element={<LoginAuthId />} /> {/* /auth/id */}
               </Route>
               <Route path="/join" element={<Join />} />
+              <Route path="/card/register" element={<CardRegister />} />
+              <Route path="/card/return" element={<InicisReturn />} />
           </Routes>
       </BrowserRouter>
   );
