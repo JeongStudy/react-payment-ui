@@ -22,7 +22,7 @@ const Header = () => {
     return (
         <header className={styles.header}>
             <div className={styles.logo}>
-                <span className={styles.logoText}>Example</span>
+                <span className={styles.logoText}>Payment-System</span>
             </div>
             <nav className={`${styles.desktopMenu}`}>
                 <a href="/card/register">카드 결제 수단 등록</a>
