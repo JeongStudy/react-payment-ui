@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import styles from "./LoginAuthId.module.css";
 import CustomAlert from "../../components/Alert/CustomAlert";
 import { loginUser } from "../../apis/login/LoginApis";
-import { getAesKey } from "../../apis/Join/AesKeyApis";
-import { getRsaKey } from "../../apis/Join/RsaKeyApis";
+import { getAesKey } from "../../apis/crypto/AesKeyApis";
+import { getRsaKey } from "../../apis/crypto/RsaKeyApis";
 import { aesEncrypt, rsaEncrypt } from "../../utils/Cipher";
 import JoinLoading from "../../components/Join/JoinLoading";
 

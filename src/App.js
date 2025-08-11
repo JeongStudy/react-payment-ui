@@ -7,7 +7,9 @@ import Login from './pages/Login/Login';
 import LoginAuthId from './pages/Login/LoginAuthId';
 import Join from './pages/Join/Join';
 import CardRegister from './pages/Card/CardRegister';
-import InicisReturn from './pages/Card/InicisReturn';
+import InicisReturn from './pages/Card/InicisReturn'
+import Order from './pages/Order/Order';
+import Payment from './pages/Payment/Payment';
 import { getCookie } from './utils/token';
 
 // PublicOnlyRoute 컴포넌트
@@ -36,6 +38,8 @@ function App() {
                 } />
                 <Route path="/card/register" element={<CardRegister />} />
                 <Route path="/card/return" element={<InicisReturn />} />
+                <Route path="/order" element={<Order />} />
+                <Route path="/payment" element={<Payment />} />
             </Routes>
         </BrowserRouter>
     );

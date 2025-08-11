@@ -26,6 +26,7 @@ const Header = () => {
             </div>
             <nav className={`${styles.desktopMenu}`}>
                 <a href="/card/register">카드 결제 수단 등록</a>
+                <a href="/order">주문 결제</a>
                 {/*<a href="#guide">사용 가이드</a>*/}
                 {/* 로그인X 때만 노출 */}
                 {!isLoggedIn && (
