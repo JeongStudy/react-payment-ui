@@ -25,8 +25,6 @@ const Header = () => {
                 <span className={styles.logoText}>Payment-System</span>
             </div>
             <nav className={`${styles.desktopMenu}`}>
-                <a href="/card/register">카드 결제 수단 등록</a>
-                <a href="/order">주문 결제</a>
                 {/*<a href="#guide">사용 가이드</a>*/}
                 {/* 로그인X 때만 노출 */}
                 {!isLoggedIn && (
@@ -37,6 +35,9 @@ const Header = () => {
                 )}
                 {/* 로그인O 시 로그아웃 등 */}
                 {isLoggedIn && (
+                    <>
+                    <a href="/card/register">카드 결제 수단 등록</a>
+                    <a href="/order">주문 결제</a>
                     <button
                         className={styles.logoutButton}
                         onClick={() => {
@@ -48,6 +49,7 @@ const Header = () => {
                     >
                         로그아웃
                     </button>
+                    </>
                 )}
             </nav>
             {/* 모바일 메뉴도 동일하게 처리 생략 */}
