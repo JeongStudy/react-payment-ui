@@ -64,7 +64,7 @@ const PaymentPasswordModal = ({ open, onClose, orderId, billingKey, onSuccess })
                 orderId,
                 billingKey,
                 payMethod: "CARD",
-                password: encryptedPassword,
+                encPassword: encryptedPassword,
                 encAesKey: encryptedAesKey,
                 rsaPublicKey: publicKey,
             };

@@ -149,7 +149,7 @@ const Join = () => {
                 email: formData.email,
                 encPassword: encryptedPassword,
                 encAesKey: encryptedAesKey,
-                publicKey,
+                rsaPublicKey : publicKey,
                 lastName: formData.last_name,
                 firstName: formData.first_name,
                 phoneNumber: formData.phone,

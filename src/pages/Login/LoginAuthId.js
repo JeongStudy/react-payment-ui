@@ -65,7 +65,7 @@ const LoginAuthId = () => {
             // 4. 로그인 API 호출
             const payload = {
                 email: formData.email,
-                password: encryptedPassword,
+                encPassword: encryptedPassword,
                 encAesKey: encryptedAesKey,
                 rsaPublicKey : publicKey,
             };
