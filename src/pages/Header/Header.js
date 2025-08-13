@@ -22,7 +22,7 @@ const Header = () => {
     return (
         <header className={styles.header}>
             <div className={styles.logo}>
-                <span className={styles.logoText}>Payment-System</span>
+                <span className={styles.logoText} onClick={() => navigate("/")} className={styles.logoText}>Payment-System</span>
             </div>
             <nav className={`${styles.desktopMenu}`}>
                 {/*<a href="#guide">사용 가이드</a>*/}
