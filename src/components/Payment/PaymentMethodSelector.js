@@ -3,7 +3,7 @@ import React from 'react';
 
 const PaymentMethodSelector = ({ method, onChange }) => {
     return (
-        <div style={{ display: 'flex', gap: 16, margin: '16px 0' }}>
+        <div style={{display: 'flex', gap: 16, margin: '16px 0'}}>
             <label style={labelStyle}>
                 <input
                     type="radio"
@@ -23,6 +23,16 @@ const PaymentMethodSelector = ({ method, onChange }) => {
                     onChange={() => onChange('EASY')}
                 />
                 <span>간편결제 (개발중)</span>
+            </label>
+            <label style={labelStyle}>
+                <input
+                    type="radio"
+                    name="payMethod"
+                    value="NONMEMBERCARD"
+                    checked={method === 'NONMEMBERCARD'}
+                    onChange={() => onChange('NONMEMBERCARD')}
+                />
+                <span>비회원 카드 결제</span>
             </label>
         </div>
     );
