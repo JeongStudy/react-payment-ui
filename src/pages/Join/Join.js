@@ -88,7 +88,7 @@ const Join = () => {
         return "";
     };
     const validateName = (name) => {
-        if (name.length < 1 || name.length > 20) return "1~20자 영문 대문자만 입력하세요.";
+        if (name.length < 1 || name.length > 20) return "1~20자만 입력하세요.";
         // const nameRegex = /^[A-Z]+$/;
         // if (!nameRegex.test(name)) return "영문 대문자(A~Z)만 입력할 수 있습니다.";
         return "";
