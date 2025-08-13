@@ -22,7 +22,7 @@ const PaymentMethodSelector = ({ method, onChange }) => {
                     checked={method === 'EASY'}
                     onChange={() => onChange('EASY')}
                 />
-                <span>간편결제 (개발중)</span>
+                <span>간편결제</span>
             </label>
             <label style={labelStyle}>
                 <input
