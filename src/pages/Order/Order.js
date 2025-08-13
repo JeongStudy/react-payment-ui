@@ -11,10 +11,10 @@ const Order = () => {
     const [selectedOrderId, setSelectedOrderId] = useState(FIXED_ORDER_ID);
     const order = useMemo(() => ({
         orderId: FIXED_ORDER_ID,
-        productName: 'ONE AI 라이센스 키(연 1석)',
+        productName: 'AI 라이센스 키(연 1석)',
         subtitle: '개발자 친화형 AI API 라이센스 키. 1계정 사용.',
         quantity: 1,
-        price: 99000,
+        price: 1,
         thumbnail: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=300&auto=format&fit=crop',
         meta: { term: '1년', platform: 'Web' },
     }), []);
