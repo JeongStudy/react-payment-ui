@@ -1,19 +1,29 @@
-// components/Password/PasswordModal.js
+// components/Payment/PaymentPasswordModal.js
 import React, { useState } from "react";
-import apiClient from "../../apis/Axios";
 import { getAesKey } from "../../apis/crypto/AesKeyApis";
 import { getRsaKey } from "../../apis/crypto/RsaKeyApis";
 import { aesEncrypt, rsaEncrypt } from "../../utils/Cipher";
+import { PaymentApis } from "../../apis/payment/PaymentApis";
 
 /**
  * props:
  *  - open: boolean
  *  - onClose: () => void
- *  - orderId: number
- *  - billingKey: string
+ *  - serviceOrderId: string | number
+ *  - productName: string
+ *  - amount: number
+ *  - paymentUserCardId: number
  *  - onSuccess?: (paymentId: number | string) => void
  */
-const PaymentPasswordModal = ({ open, onClose, orderId, billingKey, onSuccess }) => {
+const PaymentPasswordModal = ({
+                                  open,
+                                  onClose,
+                                  serviceOrderId,
+                                  productName,
+                                  amount,
+                                  paymentUserCardId,
+                                  onSuccess,
+                              }) => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
@@ -23,6 +33,10 @@ const PaymentPasswordModal = ({ open, onClose, orderId, billingKey, onSuccess })
     const requestPay = async () => {
         if (!password) {
             setErrorMsg("비밀번호를 입력해 주세요.");
+            return;
+        }
+        if (!paymentUserCardId) {
+            setErrorMsg("결제 카드가 선택되지 않았습니다.");
             return;
         }
 
@@ -55,41 +69,60 @@ const PaymentPasswordModal = ({ open, onClose, orderId, billingKey, onSuccess })
             }
 
             // 3) 클라이언트 암호화
-            const encryptedAesKey = await rsaEncrypt(aesKey, publicKey);        // Base64
-            const encryptedPassword = await aesEncrypt(password, aesKey);        // Base64(IV + Cipher)
+            const encryptedAesKey = await rsaEncrypt(aesKey, publicKey); // Base64
+            const encryptedPassword = await aesEncrypt(password, aesKey); // Base64(IV+Cipher 등)
 
-            // 4) 결제 요청
-            // 로그인과 동일하게 필드명을 맞춰 일관성 유지: password/encAesKey/rsaPublicKey
-            const body = {
-                orderId,
-                billingKey,
-                payMethod: "CARD",
+            // 4) 결제 요청 (토큰 포함, 백엔드 DTO 규격)
+            const token =
+                localStorage.getItem("accessToken") ||
+                sessionStorage.getItem("accessToken") ||
+                "";
+
+            const idempotencyKey =
+                (window.crypto && window.crypto.randomUUID && window.crypto.randomUUID()) ||
+                `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+            const payload = {
+                paymentUserCardId,
+                serviceOrderId,
+                productName,
+                amount,
+                idempotencyKey,
                 encPassword: encryptedPassword,
                 encAesKey: encryptedAesKey,
                 rsaPublicKey: publicKey,
             };
 
-            const payRes = await apiClient.post("/payment/requests", body);
-            if (payRes?.status === 201 || payRes?.status === 200) {
-                const paymentId = payRes.data?.data?.paymentId;
+            const res = await PaymentApis.createPayment(payload, token);
+
+            if (res?.status === 201 || res?.status === 200) {
+                const paymentId = res.data?.data?.paymentId;
                 onSuccess?.(paymentId);
                 onClose();
             } else {
-                setErrorMsg(payRes?.data?.message || "결제 요청이 실패했습니다.");
+                setErrorMsg(res?.data?.message || "결제 요청이 실패했습니다.");
             }
         } catch (err) {
             console.error(err);
             setErrorMsg(
-                err?.response?.data?.message || err?.message || "결제 요청 중 오류가 발생했습니다."
+                err?.response?.data?.message ||
+                err?.message ||
+                "결제 요청 중 오류가 발생했습니다."
             );
         } finally {
             setLoading(false);
         }
     };
 
+    const onKeyDown = (e) => {
+        if (e.key === "Enter" && !loading && password) {
+            requestPay();
+        }
+    };
+
     return (
-        <div style={backdrop}>
-            <div style={modal}>
+        <div style={backdrop} onClick={onClose}>
+            <div style={modal} onClick={(e) => e.stopPropagation()}>
                 <div style={{ fontWeight: 700, fontSize: 18 }}>비밀번호 확인</div>
                 <div style={{ color: "#6b7280", marginTop: 8, fontSize: 14 }}>
                     결제를 진행하려면 회원 비밀번호를 입력해 주세요.
@@ -100,18 +133,26 @@ const PaymentPasswordModal = ({ open, onClose, orderId, billingKey, onSuccess })
                     placeholder="비밀번호"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={onKeyDown}
                     style={input}
+                    autoFocus
                 />
 
                 {errorMsg && (
-                    <div style={{ color: "#ef4444", fontSize: 12, marginTop: 6 }}>{errorMsg}</div>
+                    <div style={{ color: "#ef4444", fontSize: 12, marginTop: 6 }}>
+                        {errorMsg}
+                    </div>
                 )}
 
                 <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", marginTop: 12 }}>
                     <button onClick={onClose} disabled={loading} style={btnGhost}>
                         취소
                     </button>
-                    <button onClick={requestPay} disabled={loading || !password} style={btnPrimary}>
+                    <button
+                        onClick={requestPay}
+                        disabled={loading || !password}
+                        style={btnPrimary}
+                    >
                         {loading ? "요청 중..." : "결제 요청"}
                     </button>
                 </div>
@@ -123,26 +164,30 @@ const PaymentPasswordModal = ({ open, onClose, orderId, billingKey, onSuccess })
 const backdrop = {
     position: "fixed",
     inset: 0,
-    background: "rgba(0,0,0,0.45)",
+    background: "rgba(0,0,0,0.4)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    zIndex: 50,
+    zIndex: 1000,
 };
+
 const modal = {
-    width: 420,
+    width: 360,
     background: "white",
     borderRadius: 12,
-    padding: 20,
+    padding: 16,
     boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
 };
+
 const input = {
-    width: "80%",
-    marginTop: 12,
+    width: "100%",
+    padding: "10px 12px",
     border: "1px solid #e5e7eb",
     borderRadius: 8,
-    padding: "10px 12px",
+    marginTop: 10,
+    outline: "none",
 };
+
 const btnPrimary = {
     background: "#111827",
     color: "white",
@@ -151,8 +196,10 @@ const btnPrimary = {
     padding: "10px 14px",
     cursor: "pointer",
 };
+
 const btnGhost = {
     background: "white",
+    color: "#111827",
     border: "1px solid #e5e7eb",
     borderRadius: 8,
     padding: "10px 14px",
