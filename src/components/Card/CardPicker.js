@@ -1,63 +1,148 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { getCardList } from "../../apis/card/CardApis"; // 경로는 프로젝트 구조에 맞게 조정
 
 /**
- * 실제로는 사용자의 카드 목록을 API로 받아와 렌더링.
- * 여기서는 샘플 카드 6개를 노출해 3열 그리드로 여러 줄 배치.
- * - 카드 이미지는 간단한 SVG 일러스트로 대체 (브랜드별 색상 변화)
+ * 실제 카드 조회 API 연동 버전
+ * - API 응답 스펙: { cardId, cardNumberMasked, cardType(1=체크, 0=신용), cardCompany(코드) }
+ * - 3열 그리드로 여러 줄 표시, 간단한 SVG 카드 일러스트 포함
+ * - 로딩/에러/빈 상태 처리
  */
-const CardPicker = ({ selectedCardId, onSelect }) => {
-    const sampleCards = [
-        { id: 101, brand: "KB국민(예시)", masked: "**** **** **** 1234", color: "#f59e0b" },
-        { id: 102, brand: "신한(예시)", masked: "**** **** **** 5678", color: "#3b82f6" },
-        { id: 103, brand: "우리(예시)",  masked: "**** **** **** 9012", color: "#10b981" },
-        { id: 104, brand: "NH(예시)",   masked: "**** **** **** 3456", color: "#22c55e" },
-        { id: 105, brand: "롯데(예시)",  masked: "**** **** **** 7890", color: "#ef4444" },
-        { id: 106, brand: "현대(예시)",  masked: "**** **** **** 2468", color: "#64748b" },
-    ];
+const CardPicker = ({ selectedCardId, onSelect, payload }) => {
+    const [cards, setCards] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // 카드사 코드 → 표시명/색상 매핑 (임시)
+    const companyMap = useMemo(
+        () => ({
+            // 알파 코드를 쓰는 경우
+            KEB: { label: "하나", color: "#16a34a" },
+            KNB: { label: "국민", color: "#f59e0b" },
+            SHB: { label: "신한", color: "#3b82f6" },
+            WRB: { label: "우리", color: "#10b981" },
+            LTB: { label: "롯데", color: "#ef4444" },
+            HYB: { label: "현대", color: "#64748b" },
+            NHB: { label: "NH", color: "#22c55e" },
+            // 숫자 코드(예: "14" 등)가 오는 경우를 대비한 임시 매핑
+            // 실제 코드 확정 시 여기만 교체
+            "14": { label: "신한", color: "#3b82f6" },
+            "06": { label: "국민", color: "#f59e0b" },
+            "11": { label: "농협", color: "#22c55e" },
+            "17": { label: "우리", color: "#10b981" },
+            "12": { label: "롯데", color: "#ef4444" },
+            "31": { label: "하나", color: "#16a34a" },
+            DEFAULT: { label: "카드", color: "#111827" },
+        }),
+        []
+    );
+
+    useEffect(() => {
+        let mounted = true;
+        (async () => {
+            try {
+                setLoading(true);
+                const res = await getCardList(payload ?? {});
+                // 응답이 [ ... ] 형태 혹은 { data: [ ... ] } 두 케이스 모두 대응
+                const list = Array.isArray(res?.data)
+                    ? res.data
+                    : Array.isArray(res?.data?.data)
+                        ? res.data.data
+                        : [];
+                if (!mounted) return;
+                // 표준화: UI에서 쓰기 쉬운 형태로 매핑
+                const normalized = list.map((it) => {
+                    const typeNum = Number(it.cardType);
+                    const company = companyMap[it.cardCompany] ?? companyMap.DEFAULT;
+                    return {
+                        id: it.cardId,
+                        masked: it.cardNumberMasked,
+                        type: Number.isNaN(typeNum) ? it.cardType : typeNum, // "1" → 1
+                        companyCode: String(it.cardCompany),
+                        companyLabel: company.label,
+                        color: company.color,
+                        billingKey: it.billingKey,
+                    };
+                });
+                setCards(normalized);
+                setError(null);
+            } catch (e) {
+                console.error(e);
+                setError(e);
+            } finally {
+                setLoading(false);
+            }
+        })();
+        return () => {
+            mounted = false;
+        };
+    }, [payload, companyMap]);
+
+    const onChange = (c) => {
+        onSelect?.(c);
+    };
 
     return (
         <div style={containerStyle}>
             <div style={headerStyle}>내 카드</div>
 
-            {/* 카드가 없을 때 */}
-            {sampleCards.length === 0 && (
+            {loading && (
+                <div style={gridStyle}>
+                    {Array.from({ length: 6 }).map((_, i) => (
+                        <div key={i} style={{ ...cardStyle, outline: "1px solid #e5e7eb" }}>
+                            <div style={{ ...imageWrapStyle, background: "#f3f4f6" }} />
+                            <div style={{ height: 14, background: "#f3f4f6", borderRadius: 6 }} />
+                            <div style={{ height: 12, background: "#f3f4f6", borderRadius: 6, width: "70%" }} />
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {!loading && error && (
+                <div style={emptyStyle}>카드 목록을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</div>
+            )}
+
+            {!loading && !error && cards.length === 0 && (
                 <div style={emptyStyle}>등록된 카드가 없습니다. 먼저 카드 결제 수단을 등록해 주세요.</div>
             )}
 
-            {/* 3열 그리드 */}
-            <div style={gridStyle}>
-                {sampleCards.map((c) => (
-                    <label
-                        key={c.id}
-                        style={{
-                            ...cardStyle,
-                            outline: selectedCardId === c.id ? "2px solid #111827" : "1px solid #e5e7eb",
-                            boxShadow: selectedCardId === c.id ? "0 6px 18px rgba(0,0,0,0.12)" : "0 4px 12px rgba(0,0,0,0.06)",
-                        }}
-                    >
-                        <input
-                            type="radio"
-                            name="card"
-                            value={c.id}
-                            checked={selectedCardId === c.id}
-                            onChange={() => onSelect?.(c)}
-                            style={{ display: "none" }}
-                            aria-label={`${c.brand} ${c.masked}`}
-                        />
+            {!loading && !error && cards.length > 0 && (
+                <div style={gridStyle}>
+                    {cards.map((c) => (
+                        <label
+                            key={c.id}
+                            style={{
+                                ...cardStyle,
+                                outline: selectedCardId === c.id ? "2px solid #111827" : "1px solid #e5e7eb",
+                                boxShadow:
+                                    selectedCardId === c.id ? "0 6px 18px rgba(0,0,0,0.12)" : "0 4px 12px rgba(0,0,0,0.06)",
+                            }}
+                        >
+                            <input
+                                type="radio"
+                                name="card"
+                                value={c.id}
+                                checked={selectedCardId === c.id}
+                                onChange={() => onChange(c)}
+                                style={{ display: "none" }}
+                                aria-label={`${c.companyLabel} ${c.masked}`}
+                            />
 
-                        {/* 카드 일러스트 */}
-                        <div style={imageWrapStyle}>
-                            <CardSVG color={c.color} />
-                        </div>
+                            {/* 카드 일러스트 */}
+                            <div style={imageWrapStyle}>
+                                <CardSVG color={c.color} />
+                            </div>
 
-                        {/* 텍스트 영역 */}
-                        <div style={{ display: "grid", gap: 6 }}>
-                            <div style={{ fontWeight: 600, fontSize: 14, color: "#111827" }}>{c.brand}</div>
-                            <div style={{ color: "#6b7280", fontSize: 12 }}>{c.masked}</div>
-                        </div>
-                    </label>
-                ))}
-            </div>
+                            {/* 텍스트 영역 */}
+                            <div style={{ display: "grid", gap: 6 }}>
+                                <div style={{ fontWeight: 600, fontSize: 14, color: "#111827" }}>
+                                    {c.companyLabel} · {Number(c.type) === 1 ? "체크" : "신용"}
+                                </div>
+                                <div style={{ color: "#6b7280", fontSize: 12 }}>{c.masked}</div>
+                            </div>
+                        </label>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
