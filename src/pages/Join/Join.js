@@ -143,7 +143,6 @@ const Join = () => {
             const encryptedAesKey = await rsaEncrypt(aesKey, publicKey);
             const encryptedPassword = await aesEncrypt(formData.password, aesKey);
 
-            console.log(formData);
             // 3. 회원가입 API 호출
             const payload = {
                 email: formData.email,

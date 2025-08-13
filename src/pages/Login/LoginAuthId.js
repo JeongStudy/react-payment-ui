@@ -77,9 +77,6 @@ const LoginAuthId = () => {
             // const token = res.headers.getAuthorization();
             const token = res.headers.get("authorization")|| res.headers.get("Authorization");
 
-            console.log(res)
-            console.log(res.headers)
-            console.log(token)
             if (token) {
                 // 예시: 쿠키에 저장
                 document.cookie = `accessToken=${token}; path=/;`;
