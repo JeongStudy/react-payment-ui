@@ -18,7 +18,7 @@ const Payment = () => {
             return;
         }
         if (method == 'NONMEMBERCARD') {
-            alert('비회원 카드결제는 현재 개발 중입니다.');
+            alert('1회성 카드결제는 현재 개발 중입니다.');
             return;
         }
         if (!selectedCard) {
@@ -56,7 +56,7 @@ const Payment = () => {
             )}
 
             {method === 'NONMEMBERCARD' && (
-                <div style={{marginTop: 8, color: '#6b7280'}}>비회원 카드결제는 준비 중입니다.</div>
+                <div style={{marginTop: 8, color: '#6b7280'}}>1회성 카드결제는 준비 중입니다.</div>
             )}
 
             <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: 16}}>

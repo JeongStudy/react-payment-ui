@@ -32,7 +32,7 @@ const PaymentMethodSelector = ({ method, onChange }) => {
                     checked={method === 'NONMEMBERCARD'}
                     onChange={() => onChange('NONMEMBERCARD')}
                 />
-                <span>비회원 카드 결제</span>
+                <span>1회성 카드 결제</span>
             </label>
         </div>
     );
