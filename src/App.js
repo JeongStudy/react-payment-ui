@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 import Header from './pages/Header/Header';
 import Main from './pages/Main/Main';
 import Login from './pages/Login/Login';
@@ -10,12 +10,12 @@ import CardRegister from './pages/Card/CardRegister';
 import InicisReturn from './pages/Card/InicisReturn'
 import Order from './pages/Order/Order';
 import Payment from './pages/Payment/Payment';
-import { getCookie } from './utils/token';
+import {getCookie} from './utils/token';
 
 // PublicOnlyRoute 컴포넌트
-const PublicOnlyRoute = ({ children }) => {
+const PublicOnlyRoute = ({children}) => {
     const isLoggedIn = !!getCookie("accessToken");
-    return isLoggedIn ? <Navigate to="/" replace /> : children;
+    return isLoggedIn ? <Navigate to="/" replace/> : children;
 };
 
 function App() {
@@ -23,23 +23,27 @@ function App() {
         <BrowserRouter>
             <Header/>
             <Routes>
-                <Route path="/" element={<Main />} />
+                <Route path="/" element={<Main/>}/>
                 <Route path="/auth" element={
                     <PublicOnlyRoute>
-                        <Login />
+                        <Login/>
                     </PublicOnlyRoute>
                 }>
-                    <Route path="id" element={<LoginAuthId />} />
                 </Route>
+                <Route path="/auth/id" element={
+                    <PublicOnlyRoute>
+                        <LoginAuthId/>
+                    </PublicOnlyRoute>
+                }/>
                 <Route path="/join" element={
                     <PublicOnlyRoute>
-                        <Join />
+                        <Join/>
                     </PublicOnlyRoute>
-                } />
-                <Route path="/card/register" element={<CardRegister />} />
-                <Route path="/card/return" element={<InicisReturn />} />
-                <Route path="/order" element={<Order />} />
-                <Route path="/payment" element={<Payment />} />
+                }/>
+                <Route path="/card/register" element={<CardRegister/>}/>
+                <Route path="/card/return" element={<InicisReturn/>}/>
+                <Route path="/order" element={<Order/>}/>
+                <Route path="/payment" element={<Payment/>}/>
             </Routes>
         </BrowserRouter>
     );

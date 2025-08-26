@@ -12,10 +12,10 @@ const Login = () => {
     return (
         <main className="main">
             <div className="login-container">
-                <div className="logo">
-                    {/*<img src="../../logo.svg" alt="react Logo" className="logo-img-large"/>*/}
-                    <span className="logo-text-large">Example</span>
-                </div>
+                {/*<div className="logo">*/}
+                {/*    /!*<img src="../../logo.svg" alt="react Logo" className="logo-img-large"/>*!/*/}
+                {/*    <span className="logo-text-large">Example</span>*/}
+                {/*</div>*/}
                 <p className="description">로그인/가입하고<br/>결제시스템을 관리해 보세요</p>
                 <button className="btn btn-secondary" onClick={handleIdLoginClick}>
                     <span>📧</span> 아이디로 시작

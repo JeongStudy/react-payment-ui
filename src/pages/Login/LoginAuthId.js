@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import styles from "./LoginAuthId.module.css";
 import CustomAlert from "../../components/Alert/CustomAlert";
-import { loginUser } from "../../apis/login/LoginApis";
-import { getAesKey } from "../../apis/crypto/AesKeyApis";
-import { getRsaKey } from "../../apis/crypto/RsaKeyApis";
-import { aesEncrypt, rsaEncrypt } from "../../utils/Cipher";
+import {loginUser} from "../../apis/login/LoginApis";
+import {getAesKey} from "../../apis/crypto/AesKeyApis";
+import {getRsaKey} from "../../apis/crypto/RsaKeyApis";
+import {aesEncrypt, rsaEncrypt} from "../../utils/Cipher";
 import JoinLoading from "../../components/Join/JoinLoading";
 
 const LoginAuthId = () => {
@@ -21,8 +21,8 @@ const LoginAuthId = () => {
     const [alertMessage, setAlertMessage] = useState("");
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        const {name, value} = e.target;
+        setFormData((prev) => ({...prev, [name]: value}));
     };
 
     // 로그인 요청
@@ -46,7 +46,7 @@ const LoginAuthId = () => {
                 setLoading(false);
                 return;
             }
-            const { aesKey } = aesResponse.data.data;
+            const {aesKey} = aesResponse.data.data;
 
             // 2. RSA 키 발급
             const rsaResponse = await getRsaKey();
@@ -56,7 +56,7 @@ const LoginAuthId = () => {
                 setLoading(false);
                 return;
             }
-            const { publicKey } = rsaResponse.data.data;
+            const {publicKey} = rsaResponse.data.data;
 
             // 3. 클라이언트 암호화
             const encryptedAesKey = await rsaEncrypt(aesKey, publicKey);
@@ -67,7 +67,7 @@ const LoginAuthId = () => {
                 email: formData.email,
                 encPassword: encryptedPassword,
                 encAesKey: encryptedAesKey,
-                rsaPublicKey : publicKey,
+                rsaPublicKey: publicKey,
             };
             const res = await loginUser(payload);
 
@@ -75,7 +75,7 @@ const LoginAuthId = () => {
             // 아래는 예시: 서버가 Authorization 헤더에 토큰 반환시
             // const token = res.headers['authorization'] || res.headers['Authorization'];
             // const token = res.headers.getAuthorization();
-            const token = res.headers.get("authorization")|| res.headers.get("Authorization");
+            const token = res.headers.get("authorization") || res.headers.get("Authorization");
 
             if (token) {
                 // 예시: 쿠키에 저장
@@ -99,47 +99,54 @@ const LoginAuthId = () => {
     };
 
     return (
-        <div className={styles.container}>
-            <h1>아이디 로그인</h1>
-            <form onSubmit={handleLogin}>
-                <div className={styles.field}>
-                    <label>이메일</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className={styles.input}
-                        autoComplete="username"
+        <main className="main">
+            <div className="login-container">
+
+                {/*<h1>아이디 로그인</h1>*/}
+                <form onSubmit={handleLogin}>
+                    <div className={styles.field}>
+                        {/*<label>이메일</label>*/}
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className={styles.input}
+                            autoComplete="username"
+                            placeholder={'이메일'}
+                            maxLength={25}
+                        />
+                    </div>
+                    <div className={styles.field}>
+                        {/*<label>비밀번호</label>*/}
+                        <input
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className={styles.input}
+                            autoComplete="current-password"
+                            placeholder={'비밀번호'}
+                            maxLength={25}
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        className={styles.submitButton}
+                        disabled={loading}
+                    >
+                        로그인
+                    </button>
+                </form>
+                {loading && <JoinLoading text="로그인 중..."/>}
+                {showAlert && (
+                    <CustomAlert
+                        message={alertMessage}
+                        onConfirm={() => setShowAlert(false)}
                     />
-                </div>
-                <div className={styles.field}>
-                    <label>비밀번호</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        className={styles.input}
-                        autoComplete="current-password"
-                    />
-                </div>
-                <button
-                    type="submit"
-                    className={styles.submitButton}
-                    disabled={loading}
-                >
-                    로그인
-                </button>
-            </form>
-            {loading && <JoinLoading text="로그인 중..." />}
-            {showAlert && (
-                <CustomAlert
-                    message={alertMessage}
-                    onConfirm={() => setShowAlert(false)}
-                />
-            )}
-        </div>
+                )}
+            </div>
+        </main>
     );
 };
 
