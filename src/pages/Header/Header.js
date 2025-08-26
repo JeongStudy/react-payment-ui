@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./Header.module.css";
-import { useNavigate } from "react-router-dom";
-import { getCookie } from "../../utils/token"; // 방금 만든 함수
+import {NavLink, useNavigate} from "react-router-dom";
+import {getCookie} from "../../utils/token"; // 방금 만든 함수
 
 const Header = () => {
     const navigate = useNavigate();
@@ -22,7 +22,8 @@ const Header = () => {
     return (
         <header className={styles.header}>
             <div className={styles.logo}>
-                <span className={styles.logoText} onClick={() => navigate("/")} className={styles.logoText}>Payment-System</span>
+                <span className={styles.logoText} onClick={() => navigate("/")}
+                      className={styles.logoText}>Payment-System</span>
             </div>
             <nav className={`${styles.desktopMenu}`}>
                 {/*<a href="#guide">사용 가이드</a>*/}
@@ -35,21 +36,35 @@ const Header = () => {
                 )}
                 {/* 로그인O 시 로그아웃 등 */}
                 {isLoggedIn && (
-                    <>
-                    <a href="/card/register">카드 결제 수단 등록</a>
-                    <a href="/order">주문 결제</a>
-                    <button
-                        className={styles.logoutButton}
-                        onClick={() => {
-                            // 로그아웃 시 쿠키 삭제(secure 옵션 고려 실제 삭제 코드는 상황 따라 다름)
-                            document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-                            setIsLoggedIn(false);
-                            navigate("/auth");
-                        }}
-                    >
-                        로그아웃
-                    </button>
-                    </>
+                    <div className={styles.navMenu}>
+                        <NavLink
+                            to="/card/register"
+                            className={({isActive}) =>
+                                `${styles.navLink} ${isActive ? styles.active : ""}`
+                            }
+                        >
+                            카드 등록
+                        </NavLink>
+                        <NavLink
+                            to="/order"
+                            className={({isActive}) =>
+                                `${styles.navLink} ${isActive ? styles.active : ""}`
+                            }
+                        >
+                            주문 결제
+                        </NavLink>
+                        <button
+                            className={styles.logoutButton}
+                            onClick={() => {
+                                document.cookie =
+                                    "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                                setIsLoggedIn(false);
+                                navigate("/auth");
+                            }}
+                        >
+                            로그아웃
+                        </button>
+                    </div>
                 )}
             </nav>
             {/* 모바일 메뉴도 동일하게 처리 생략 */}
