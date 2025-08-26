@@ -11,6 +11,7 @@ import InicisReturn from './pages/Card/InicisReturn'
 import Order from './pages/Order/Order';
 import Payment from './pages/Payment/Payment';
 import {getCookie} from './utils/token';
+import PaymentComplete from "./pages/Payment/PaymentComplete";
 
 // PublicOnlyRoute 컴포넌트
 const PublicOnlyRoute = ({children}) => {
@@ -44,6 +45,7 @@ function App() {
                 <Route path="/card/return" element={<InicisReturn/>}/>
                 <Route path="/order" element={<Order/>}/>
                 <Route path="/payment" element={<Payment/>}/>
+                <Route path="/payment/complete" element={<PaymentComplete />} />
             </Routes>
         </BrowserRouter>
     );

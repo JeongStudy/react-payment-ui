@@ -78,7 +78,12 @@ const CardPicker = ({ selectedCardId, onSelect, payload }) => {
     }, [payload, companyMap]);
 
     const onChange = (c) => {
-        onSelect?.(c);
+        if (selectedCardId === c.id) {
+            // 이미 선택된 카드를 다시 클릭 → 해제
+            onSelect?.(null);
+        } else {
+            onSelect?.(c);
+        }
     };
 
     return (
@@ -118,7 +123,7 @@ const CardPicker = ({ selectedCardId, onSelect, payload }) => {
                             }}
                         >
                             <input
-                                type="radio"
+                                type="checkbox"
                                 name="card"
                                 value={c.id}
                                 checked={selectedCardId === c.id}
