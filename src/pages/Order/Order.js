@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import OrderSummary from '../../components/Order/OrderSummary';
 
 // 하드코딩된 단일 주문(요구사항)
-const FIXED_ORDER_ID = 2400811; // Integer 지정
+const FIXED_ORDER_ID = "2400811";
 
 const Order = () => {
     const navigate = useNavigate();
